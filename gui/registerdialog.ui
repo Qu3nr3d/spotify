@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RegisterDialog</class>
+ <widget class="QWidget" name="RegisterDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>872</width>
+    <height>667</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>register</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>20</y>
+     <width>250</width>
+     <height>250</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap>../resources/icons/logo_icon.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="emailLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>252</x>
+     <y>330</y>
+     <width>221</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(20,20,20);
+color: rgb(0,255,100);
+border: 2px solid rgb(0,255,100);
+border-radius:5px;
+padding:5px;</string>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::EchoMode::Normal</enum>
+   </property>
+   <property name="placeholderText">
+    <string>E-mail</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="nameLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>280</y>
+     <width>221</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(20,20,20);
+color: rgb(0,255,100);
+border: 2px solid rgb(0,255,100);
+border-radius:5px;
+padding:5px;</string>
+   </property>
+   <property name="placeholderText">
+    <string>Imię</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="registerButton">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>380</y>
+     <width>221</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,
+                                  stop:0 rgb(0,255,100),
+                                  stop:1 rgb(0,200,50));
+color: black;                  /* kolor tekstu */
+font-weight: bold;             /* pogrubienie */
+border-radius: 5px;            /* zaokrąglone rogi */</string>
+   </property>
+   <property name="text">
+    <string>Zarejestruj się</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="surnameLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>488</x>
+     <y>280</y>
+     <width>221</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(20,20,20);
+color: rgb(0,255,100);
+border: 2px solid rgb(0,255,100);
+border-radius:5px;
+padding:5px;</string>
+   </property>
+   <property name="placeholderText">
+    <string>Nazwisko</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="passwordLineEdit_2">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>330</y>
+     <width>221</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(20,20,20);
+color: rgb(0,255,100);
+border: 2px solid rgb(0,255,100);
+border-radius:5px;
+padding:5px;</string>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::EchoMode::Password</enum>
+   </property>
+   <property name="placeholderText">
+    <string>Hasło</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="retreatButton">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>380</y>
+     <width>221</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,
+                                  stop:0 rgb(0,255,100),
+                                  stop:1 rgb(0,200,50));
+color: black;                  /* kolor tekstu */
+font-weight: bold;             /* pogrubienie */
+border-radius: 5px;            /* zaokrąglone rogi */</string>
+   </property>
+   <property name="text">
+    <string>Anuluj</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
