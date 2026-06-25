@@ -1,20 +1,56 @@
-#pragma once
+#ifndef SPOTIFY_FAVORITEPLAYLIST_H
+#define SPOTIFY_FAVORITEPLAYLIST_H
+
 #include "Playlist.h"
 
-class FavoritePlaylist {
+class FavoritePlaylist : public Playlist
+{
 public:
-    FavoritePlaylist(Playlist* ulubione) : favoritePlaylist(ulubione) {}
+    FavoritePlaylist()
+        : Playlist("Ulubione")
+    {
+    }
 
-    void dodajDoUlubionych(Playable* item) {
-        if (!favorites.contains(item)) {
-            favorites.append(item);
-            if (favoritePlaylist) favoritePlaylist->dodajUtwor(item);
+    explicit FavoritePlaylist(int id)
+        : Playlist(id, "Ulubione")
+    {
+    }
+
+    QString getType() const override
+    {
+        return "FavoritePlaylist";
+    }
+
+    void addItem(const std::shared_ptr<Playable>& item) override
+    {
+        if (item == nullptr) {
+            return;
+        }
+
+        if (containsItem(item->getId())) {
+            return;
+        }
+
+        items.push_back(item);
+    }
+
+    void toggleItem(const std::shared_ptr<Playable>& item)
+    {
+        if (item == nullptr) {
+            return;
+        }
+
+        if (containsItem(item->getId())) {
+            removeItem(item->getId());
+        } else {
+            addItem(item);
         }
     }
 
-    QVector<Playable*> getUlubione() const { return favorites; }
-
-private:
-    QVector<Playable*> favorites;
-    Playlist* favoritePlaylist; // wskaźnik do playlisty "Ulubione"
+    bool isFavourite(int itemId) const
+    {
+        return containsItem(itemId);
+    }
 };
+
+#endif // SPOTIFY_FAVORITEPLAYLIST_H

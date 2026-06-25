@@ -37,28 +37,58 @@ bool DatabaseManager::createTables()
             password_hash TEXT NOT NULL,
             account_type TEXT NOT NULL DEFAULT 'free'
         )
-)";
+    )";
+
     if (!query.exec(createUsersTable)) {
         qDebug() << "Create users table error:" << query.lastError().text();
         return false;
     }
 
     const QString createSongsTable = R"(
-    CREATE TABLE IF NOT EXISTS songs (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        artist TEXT NOT NULL,
-        album TEXT,
-        duration TEXT,
-        genre TEXT,
-        UNIQUE(title, artist)
-    )
-)";
+        CREATE TABLE IF NOT EXISTS songs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            artist TEXT NOT NULL,
+            album TEXT,
+            duration TEXT,
+            genre TEXT,
+            UNIQUE(title, artist)
+        )
+    )";
 
     if (!query.exec(createSongsTable)) {
         qDebug() << "Create songs table error:" << query.lastError().text();
         return false;
     }
+
+    const QString createHistoryTable = R"(
+        CREATE TABLE IF NOT EXISTS history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            song_id INTEGER NOT NULL,
+            played_at TEXT NOT NULL,
+            FOREIGN KEY(user_id) REFERENCES users(id),
+            FOREIGN KEY(song_id) REFERENCES songs(id)
+        )
+    )";
+
+    const QString createFavouritesTable = R"(
+    CREATE TABLE IF NOT EXISTS favourites (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        song_id INTEGER NOT NULL,
+        created_at TEXT NOT NULL,
+        UNIQUE(user_id, song_id),
+        FOREIGN KEY(user_id) REFERENCES users(id),
+        FOREIGN KEY(song_id) REFERENCES songs(id)
+    )
+)";
+
+    if (!query.exec(createFavouritesTable)) {
+        qDebug() << "Create favourites table error:" << query.lastError().text();
+        return false;
+    }
+
     return true;
 }
 
@@ -215,6 +245,197 @@ QVector<SongRecord> DatabaseManager::getAllSongs()
         ORDER BY title ASC
     )")) {
         qDebug() << "Get all songs error:" << query.lastError().text();
+        return songs;
+    }
+
+    while (query.next()) {
+        SongRecord song;
+        song.id = query.value("id").toInt();
+        song.title = query.value("title").toString();
+        song.artist = query.value("artist").toString();
+        song.album = query.value("album").toString();
+        song.duration = query.value("duration").toString();
+        song.genre = query.value("genre").toString();
+
+        songs.push_back(song);
+    }
+
+    return songs;
+}
+
+bool DatabaseManager::addHistory(int userId, int songId)
+{
+    if (userId <= 0 || songId <= 0) {
+        return false;
+    }
+
+    QSqlQuery query(database);
+    query.prepare(R"(
+        INSERT INTO history (user_id, song_id, played_at)
+        VALUES (:user_id, :song_id, datetime('now', 'localtime'))
+    )");
+
+    query.bindValue(":user_id", userId);
+    query.bindValue(":song_id", songId);
+
+    if (!query.exec()) {
+        qDebug() << "Add history error:" << query.lastError().text();
+        return false;
+    }
+
+    return true;
+}
+
+QVector<HistoryRecord> DatabaseManager::getUserHistory(int userId)
+{
+    QVector<HistoryRecord> history;
+
+    if (userId <= 0) {
+        return history;
+    }
+
+    QSqlQuery query(database);
+    query.prepare(R"(
+        SELECT
+            h.id AS history_id,
+            h.user_id,
+            h.song_id,
+            h.played_at,
+            s.title,
+            s.artist,
+            s.album,
+            s.duration,
+            s.genre
+        FROM history h
+        JOIN songs s ON h.song_id = s.id
+        WHERE h.user_id = :user_id
+        ORDER BY h.id DESC
+    )");
+
+    query.bindValue(":user_id", userId);
+
+    if (!query.exec()) {
+        qDebug() << "Get user history error:" << query.lastError().text();
+        return history;
+    }
+
+    while (query.next()) {
+        HistoryRecord record;
+        record.id = query.value("history_id").toInt();
+        record.userId = query.value("user_id").toInt();
+        record.songId = query.value("song_id").toInt();
+        record.playedAt = query.value("played_at").toString();
+        record.title = query.value("title").toString();
+        record.artist = query.value("artist").toString();
+        record.album = query.value("album").toString();
+        record.duration = query.value("duration").toString();
+        record.genre = query.value("genre").toString();
+
+        history.push_back(record);
+    }
+
+    return history;
+}
+
+bool DatabaseManager::addFavourite(int userId, int songId)
+{
+    if (userId <= 0 || songId <= 0) {
+        return false;
+    }
+
+    QSqlQuery query(database);
+    query.prepare(R"(
+        INSERT OR IGNORE INTO favourites (user_id, song_id, created_at)
+        VALUES (:user_id, :song_id, datetime('now', 'localtime'))
+    )");
+
+    query.bindValue(":user_id", userId);
+    query.bindValue(":song_id", songId);
+
+    if (!query.exec()) {
+        qDebug() << "Add favourite error:" << query.lastError().text();
+        return false;
+    }
+
+    return true;
+}
+
+bool DatabaseManager::removeFavourite(int userId, int songId)
+{
+    if (userId <= 0 || songId <= 0) {
+        return false;
+    }
+
+    QSqlQuery query(database);
+    query.prepare(R"(
+        DELETE FROM favourites
+        WHERE user_id = :user_id
+          AND song_id = :song_id
+    )");
+
+    query.bindValue(":user_id", userId);
+    query.bindValue(":song_id", songId);
+
+    if (!query.exec()) {
+        qDebug() << "Remove favourite error:" << query.lastError().text();
+        return false;
+    }
+
+    return true;
+}
+
+bool DatabaseManager::isFavourite(int userId, int songId)
+{
+    if (userId <= 0 || songId <= 0) {
+        return false;
+    }
+
+    QSqlQuery query(database);
+    query.prepare(R"(
+        SELECT id
+        FROM favourites
+        WHERE user_id = :user_id
+          AND song_id = :song_id
+    )");
+
+    query.bindValue(":user_id", userId);
+    query.bindValue(":song_id", songId);
+
+    if (!query.exec()) {
+        qDebug() << "Is favourite error:" << query.lastError().text();
+        return false;
+    }
+
+    return query.next();
+}
+
+QVector<SongRecord> DatabaseManager::getUserFavourites(int userId)
+{
+    QVector<SongRecord> songs;
+
+    if (userId <= 0) {
+        return songs;
+    }
+
+    QSqlQuery query(database);
+    query.prepare(R"(
+        SELECT
+            s.id,
+            s.title,
+            s.artist,
+            s.album,
+            s.duration,
+            s.genre
+        FROM favourites f
+        JOIN songs s ON f.song_id = s.id
+        WHERE f.user_id = :user_id
+        ORDER BY f.created_at DESC, f.id DESC
+    )");
+
+    query.bindValue(":user_id", userId);
+
+    if (!query.exec()) {
+        qDebug() << "Get user favourites error:" << query.lastError().text();
         return songs;
     }
 

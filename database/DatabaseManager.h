@@ -22,6 +22,18 @@ struct SongRecord {
     QString genre;
 };
 
+struct HistoryRecord {
+    int id;
+    int userId;
+    int songId;
+    QString title;
+    QString artist;
+    QString album;
+    QString duration;
+    QString genre;
+    QString playedAt;
+};
+
 class DatabaseManager {
 public:
     DatabaseManager();
@@ -31,6 +43,14 @@ public:
 
     bool seedSongs();
     QVector<SongRecord> getAllSongs();
+
+    bool addHistory(int userId, int songId);
+    QVector<HistoryRecord> getUserHistory(int userId);
+
+    bool addFavourite(int userId, int songId);
+    bool removeFavourite(int userId, int songId);
+    bool isFavourite(int userId, int songId);
+    QVector<SongRecord> getUserFavourites(int userId);
 
     bool registerUser(const QString& name,
                       const QString& surname,

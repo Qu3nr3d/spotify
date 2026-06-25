@@ -1,10 +1,22 @@
-#pragma once
+#ifndef SPOTIFY_PLAYABLE_H
+#define SPOTIFY_PLAYABLE_H
+
 #include <QString>
 
-class Playable {
+class Playable
+{
 public:
-    virtual QString getTytul() const = 0;
-    virtual QString getArtysta() const = 0;
-    virtual int getDlugosc() const = 0;
     virtual ~Playable() = default;
+
+    virtual int getId() const = 0;
+
+    virtual QString getTitle() const = 0;
+    virtual QString getArtist() const = 0;
+    virtual QString getAlbum() const = 0;
+    virtual QString getDuration() const = 0;
+    virtual QString getGenre() const = 0;
+
+    virtual QString getType() const = 0;
 };
+
+#endif // SPOTIFY_PLAYABLE_H

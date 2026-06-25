@@ -1,16 +1,75 @@
-#pragma once
+#ifndef SPOTIFY_SONG_H
+#define SPOTIFY_SONG_H
+
+#include <QString>
+
 #include "Playable.h"
 
-class Song : public Playable {
+class Song : public Playable
+{
 public:
-    Song(const QString& t, const QString& a, int d)
-        : tytul(t), artysta(a), dlugosc(d) {}
+    Song()
+        : id(-1)
+    {
+    }
 
-    QString tytul;
-    QString artysta;
-    int dlugosc;
+    Song(int id,
+         const QString& title,
+         const QString& artist,
+         const QString& album,
+         const QString& duration,
+         const QString& genre)
+        : id(id),
+          title(title),
+          artist(artist),
+          album(album),
+          duration(duration),
+          genre(genre)
+    {
+    }
 
-    QString getTytul() const override { return tytul; }
-    QString getArtysta() const override { return artysta; }
-    int getDlugosc() const override { return dlugosc; }
+    int getId() const override
+    {
+        return id;
+    }
+
+    QString getTitle() const override
+    {
+        return title;
+    }
+
+    QString getArtist() const override
+    {
+        return artist;
+    }
+
+    QString getAlbum() const override
+    {
+        return album;
+    }
+
+    QString getDuration() const override
+    {
+        return duration;
+    }
+
+    QString getGenre() const override
+    {
+        return genre;
+    }
+
+    QString getType() const override
+    {
+        return "Song";
+    }
+
+private:
+    int id;
+    QString title;
+    QString artist;
+    QString album;
+    QString duration;
+    QString genre;
 };
+
+#endif // SPOTIFY_SONG_H

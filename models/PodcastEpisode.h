@@ -1,16 +1,90 @@
-#pragma once
+#ifndef SPOTIFY_PODCASTEPISODE_H
+#define SPOTIFY_PODCASTEPISODE_H
+
+#include <QString>
+
 #include "Playable.h"
 
-class PodcastEpisode : public Playable {
+class PodcastEpisode : public Playable
+{
 public:
-    PodcastEpisode(const QString& t, const QString& h, int d)
-        : tytul(t), host(h), dlugosc(d) {}
+    PodcastEpisode()
+        : id(-1)
+    {
+    }
 
-    QString tytul;
+    PodcastEpisode(int id,
+                   const QString& title,
+                   const QString& host,
+                   const QString& podcastName,
+                   const QString& duration,
+                   const QString& category)
+        : id(id),
+          title(title),
+          host(host),
+          podcastName(podcastName),
+          duration(duration),
+          category(category)
+    {
+    }
+
+    int getId() const override
+    {
+        return id;
+    }
+
+    QString getTitle() const override
+    {
+        return title;
+    }
+
+    QString getArtist() const override
+    {
+        return host;
+    }
+
+    QString getAlbum() const override
+    {
+        return podcastName;
+    }
+
+    QString getDuration() const override
+    {
+        return duration;
+    }
+
+    QString getGenre() const override
+    {
+        return category;
+    }
+
+    QString getType() const override
+    {
+        return "PodcastEpisode";
+    }
+
+    QString getHost() const
+    {
+        return host;
+    }
+
+    QString getPodcastName() const
+    {
+        return podcastName;
+    }
+
+    QString getCategory() const
+    {
+        return category;
+    }
+
+private:
+    int id;
+    QString title;
     QString host;
-    int dlugosc;
-
-    QString getTytul() const override { return tytul; }
-    QString getArtysta() const override { return host; }
-    int getDlugosc() const override { return dlugosc; }
+    QString podcastName;
+    QString duration;
+    QString category;
 };
+
+#endif // SPOTIFY_PODCASTEPISODE_H
