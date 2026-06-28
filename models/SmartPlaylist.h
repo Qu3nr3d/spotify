@@ -1,22 +1,26 @@
 #ifndef SPOTIFY_SMARTPLAYLIST_H
 #define SPOTIFY_SMARTPLAYLIST_H
 
+#include <memory>
+
 #include <QString>
+#include <QVector>
 
 #include "Playlist.h"
+#include "Playable.h"
 
 class SmartPlaylist : public Playlist
 {
 public:
     SmartPlaylist()
         : Playlist("Smart Playlist"),
-          filterType("All")
+          filterGenre("All")
     {
     }
 
-    SmartPlaylist(const QString& name, const QString& filterType)
+    SmartPlaylist(const QString& name, const QString& filterGenre)
         : Playlist(name),
-          filterType(filterType)
+          filterGenre(filterGenre)
     {
     }
 
@@ -25,18 +29,34 @@ public:
         return "SmartPlaylist";
     }
 
-    QString getFilterType() const
+    QString getFilterGenre() const
     {
-        return filterType;
+        return filterGenre;
     }
 
-    void setFilterType(const QString& filterType)
+    void setFilterGenre(const QString& filterGenre)
     {
-        this->filterType = filterType;
+        this->filterGenre = filterGenre;
+    }
+
+    void buildFromLibrary(const QVector<std::shared_ptr<Playable>>& libraryItems)
+    {
+        clear();
+
+        for (const std::shared_ptr<Playable>& item : libraryItems) {
+            if (item == nullptr) {
+                continue;
+            }
+
+            if (filterGenre == "All" ||
+                item->getGenre().compare(filterGenre, Qt::CaseInsensitive) == 0) {
+                addItem(item);
+                }
+        }
     }
 
 private:
-    QString filterType;
+    QString filterGenre;
 };
 
 #endif // SPOTIFY_SMARTPLAYLIST_H

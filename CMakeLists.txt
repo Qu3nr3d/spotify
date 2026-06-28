@@ -30,14 +30,9 @@ add_executable(spotify
         models/Song.h
         models/PodcastEpisode.h
         models/Audiobook.h
-        models/Album.h
-        models/Artist.h
-        models/Band.h
-        models/BandMember.h
         models/Playlist.h
         models/SmartPlaylist.h
         models/FavoritePlaylist.h
-        models/MusicLibrary.h
         models/User.h
         models/FreeUser.h
         models/PremiumUser.h
@@ -54,6 +49,8 @@ add_executable(spotify
         controllers/UserController.h
         database/DatabaseManager.cpp
         database/DatabaseManager.h
+        controllers/RatingController.cpp
+        controllers/RatingController.h
 )
 
 target_link_libraries(spotify

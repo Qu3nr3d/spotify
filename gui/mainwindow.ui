@@ -194,6 +194,55 @@
            </property>
           </widget>
          </item>
+         <item>
+          <layout class="QHBoxLayout" name="premiumUpgradeLayout">
+           <item>
+            <spacer name="premiumLeftSpacer">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Policy::Expanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="upgradePremiumButton">
+             <property name="minimumSize">
+              <size>
+               <width>180</width>
+               <height>36</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Aktywuj Premium</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="premiumRightSpacer">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Policy::Expanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
         </layout>
        </widget>
       </item>
@@ -264,6 +313,41 @@
        <widget class="QPushButton" name="addFavouriteButton">
         <property name="text">
          <string>Dodaj do ulubionych</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="rateButton">
+        <property name="text">
+         <string>Ocen utwor</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="addToPlaylistButton">
+        <property name="text">
+         <string>Dodaj do playlisty</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="removeFromPlaylistButton">
+        <property name="text">
+         <string>Usun z playlisty</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="createPlaylistButton">
+        <property name="text">
+         <string>Utworz playliste</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="removePlaylistButton">
+        <property name="text">
+         <string>Usun playliste</string>
         </property>
        </widget>
       </item>

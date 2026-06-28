@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
     }
 
     database.seedSongs();
+    database.seedAudiobooks();
+    database.seedPodcastEpisodes();
 
     Login loginWindow(&database);
     loginWindow.show();
