@@ -1,38 +1,78 @@
-void mainwindow::handleRemovePlaylistButton()
+#ifndef SPOTIFY_RATING_H
+#define SPOTIFY_RATING_H
+
+#include <QString>
+
+class Rating
 {
-    if (ui->sectionTitleLabel->text() != "Playlisty") {
-        ui->currentSongLabel->setText("Wejdz w widok Playlisty i zaznacz zwykla playliste.");
-        return;
+public:
+    Rating()
+        : id(-1),
+          userId(-1),
+          playableId(-1),
+          value(0)
+    {
     }
 
-    int selectedRow = ui->songsTableWidget->currentRow();
-
-    if (selectedRow < 0) {
-        ui->currentSongLabel->setText("Najpierw zaznacz playliste do usuniecia.");
-        return;
+    Rating(int id,
+           int userId,
+           int playableId,
+           const QString& playableType,
+           int value)
+        : id(id),
+          userId(userId),
+          playableId(playableId),
+          playableType(playableType),
+          value(value)
+    {
     }
 
-    int normalPlaylistCount = playlistController.getPlaylistCount();
-
-    if (selectedRow >= normalPlaylistCount) {
-        ui->currentSongLabel->setText("Smart playlist nie mozna usunac recznie.");
-        return;
+    int getId() const
+    {
+        return id;
     }
 
-    PlaylistRecord playlistRecord;
-
-    if (!playlistController.getPlaylistRecordAt(selectedRow, playlistRecord)) {
-        ui->currentSongLabel->setText("Nie udalo sie znalezc playlisty.");
-        return;
+    int getUserId() const
+    {
+        return userId;
     }
 
-    bool removed = playlistController.removePlaylist(selectedRow);
-
-    if (removed) {
-        ui->currentSongLabel->setText("Usunieto playliste: " + playlistRecord.name);
-        currentPlaylistIndex = -1;
-        showPlaylistsView();
-    } else {
-        ui->currentSongLabel->setText("Nie udalo sie usunac playlisty.");
+    int getPlayableId() const
+    {
+        return playableId;
     }
-}
+
+    QString getPlayableType() const
+    {
+        return playableType;
+    }
+
+    int getValue() const
+    {
+        return value;
+    }
+
+    void setValue(int value)
+    {
+        if (value < 1) {
+            this->value = 1;
+            return;
+        }
+
+        if (value > 5) {
+            this->value = 5;
+            return;
+        }
+
+        this->value = value;
+    }
+
+private:
+    int id;
+    int userId;
+    int playableId;
+    QString playableType;
+    int value;
+};
+
+#endif // SPOTIFY_RATING_H
